@@ -9,8 +9,6 @@ import {
 } from 'nestjs-telegraf';
 import { Context, Telegraf } from 'telegraf';
 import { BotButtons } from './bot.buttons';
-import { PostgresService } from '../postgres/postgres.service';
-import { TelegramUser } from '../postgres/entities/telegram_users.entity';
 import { I18nTranslateService } from '../i18n/i18n.service';
 
 const CURRENCIES_COMMANDS = [
@@ -24,38 +22,19 @@ const BUDGET_COMMANDS = ['Ведение бюджета', 'Budget management'];
 
 @Update()
 export class BotService {
-  private _postgres: PostgresService;
   private readonly _i18n: I18nTranslateService;
-  private _telegram_user: TelegramUser;
 
   constructor(
     @InjectBot() private bot: Telegraf<Context>,
-    postgres: PostgresService,
     i18n: I18nTranslateService,
   ) {
     this._i18n = i18n;
-    this._postgres = postgres;
   }
 
   @Start()
   async start(@Ctx() ctx: Context) {
-    ctx['session']['selected_currency'] = '';
-    ctx['session']['expense_indicator'] = false;
-    ctx['session']['language'] = ctx.message.from.language_code;
-
-    const telegram_user = new TelegramUser();
-    telegram_user.telegram_id = ctx.message.from.id;
-    telegram_user.first_name = ctx.message.from.first_name;
-    telegram_user.username = ctx.message.from.username;
-    telegram_user.last_name = ctx.message.from.last_name || null;
-    telegram_user.is_premium = ctx.message.from.is_premium || false;
-    telegram_user.language = ctx.message.from.language_code;
-    this._telegram_user = telegram_user;
-
-    await this._postgres.loginTelegramBot(this._telegram_user);
-
     await ctx.replyWithHTML(
-      await this._i18n.getWelcome(this._telegram_user),
+      await this._i18n.getWelcome(ctx.from.id),
       BotButtons.startupButtons(
         await this._i18n.startupButtons(ctx['session']['language']),
       ),
