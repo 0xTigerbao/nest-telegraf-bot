@@ -13,8 +13,6 @@ services:
     image: postgres:latest
     ports:
       - "5432:5432"
-    volumes:
-      - /data/postgres:/data/postgres
     env_file:
       - database.env
     networks:
@@ -27,8 +25,6 @@ services:
     image: dpage/pgadmin4
     ports:
       - "8080:80"
-    volumes:
-      - /data/pgadmin:/root/.pgadmin
     env_file:
       - database.env
     networks:

@@ -5,7 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { BotModule } from './bot/bot.module';
 import { CurrenciesModule } from './currencies/currencies.module';
 import { I18nTranslateModule } from './i18n/i18n.module';
-import { PrismaModule } from './prisma/prisma.module';
+import { PrismaModule } from './prisma';
 
 @Module({
   imports: [
