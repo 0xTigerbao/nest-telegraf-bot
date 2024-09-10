@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { I18nService } from 'nestjs-i18n';
-import { TelegramUser } from '../postgres/entities/telegram_users.entity';
 import { I18nTranslations } from './generated/i18n.generated';
+import { User } from '@prisma/client';
 
 export type ButtonsLocalNames = string;
 
@@ -9,16 +9,12 @@ export type ButtonsLocalNames = string;
 export class I18nTranslateService {
   constructor(private readonly i18nService: I18nService<I18nTranslations>) {}
 
-  async getWelcome({
-    language,
-    first_name,
-    last_name,
-  }: TelegramUser): Promise<string> {
+  async getWelcome(user: User): Promise<string> {
     return await this.i18nService.t('main.WELCOME', {
-      lang: language,
+      lang: user.language,
       args: {
-        first_name: first_name,
-        last_name: last_name || '',
+        first_name: user.first_name,
+        last_name: user.last_name || '',
       },
     });
   }
@@ -38,6 +34,7 @@ export class I18nTranslateService {
   async getDefaultCurrency(lang: string): Promise<string> {
     return await this.i18nService.t('main.DEFAULT_CURRENCY', { lang });
   }
+
   async getShowCommands(lang: string): Promise<string> {
     return await this.i18nService.t('main.SHOW_COMMANDS', { lang });
   }
@@ -71,6 +68,7 @@ export class I18nTranslateService {
       args: { main_currency },
     });
   }
+
   async getCurrentValue(
     lang: string,
     sum: number,
@@ -97,6 +95,7 @@ export class I18nTranslateService {
   async getBudgetNoData(lang: string): Promise<string> {
     return await this.i18nService.t('main.budget.NO_DATA', { lang });
   }
+
   async getBudgetShowData(lang: string): Promise<string> {
     return await this.i18nService.t('main.budget.SHOW_DATA', { lang });
   }
@@ -108,28 +107,33 @@ export class I18nTranslateService {
   async getExpensesInfo(lang: string): Promise<string> {
     return await this.i18nService.t('main.expenses.EXPENSES_INFO', { lang });
   }
+
   async getExpensesCategories(lang: string): Promise<string> {
     return await this.i18nService.t('main.expenses.CATEGORIES', {
       lang,
     });
   }
+
   async getExpensesFormat(lang: string, categories: string): Promise<string> {
     return await this.i18nService.t('main.expenses.FORMAT', {
       lang,
       args: { categories },
     });
   }
+
   async getExpensesNoData(lang: string, currency: string): Promise<string> {
     return await this.i18nService.t('main.expenses.NO_DATA', {
       lang,
       args: { currency },
     });
   }
+
   async getExpensesImpossible(lang: string): Promise<string> {
     return await this.i18nService.t('main.expenses.IMPOSSIBLE', {
       lang,
     });
   }
+
   async startupButtons(lang: string): Promise<ButtonsLocalNames[]> {
     return [
       await this.i18nService.t('buttons.main_keyboard.BUDGET', {
@@ -210,6 +214,7 @@ export class I18nTranslateService {
       }),
     ];
   }
+
   async commandsExpensesPeriods(lang: string): Promise<ButtonsLocalNames[]> {
     return [
       await this.i18nService.translate('buttons.expenses_periods.WEEK', {

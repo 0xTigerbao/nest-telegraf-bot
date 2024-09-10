@@ -2,7 +2,7 @@ import { Markup } from 'telegraf';
 import { ButtonsLocalNames } from '../i18n/i18n.service';
 
 export class BotButtons {
-  static startupButtons(button_names: ButtonsLocalNames[]) {
+  static startupButtons(button_names: ButtonsLocalNames[]): any {
     return Markup.keyboard(
       [
         Markup.button.callback(button_names[0], 'budget'),
@@ -15,14 +15,14 @@ export class BotButtons {
     );
   }
 
-  static chooseLanguage() {
+  static chooseLanguage(): any {
     return Markup.inlineKeyboard([
       Markup.button.callback('RU', 'ru'),
       Markup.button.callback('EN', 'en'),
     ]);
   }
 
-  static showCommandsMenu(button_commands: ButtonsLocalNames[]) {
+  static showCommandsMenu(button_commands: ButtonsLocalNames[]): any {
     return Markup.inlineKeyboard(
       [
         Markup.button.callback(button_commands[0], 'currencies'),
@@ -35,7 +35,7 @@ export class BotButtons {
     );
   }
 
-  static showCurrencyMenu() {
+  static showCurrencyMenu(): any {
     return Markup.inlineKeyboard(
       [
         Markup.button.callback('AZN', 'azn'),
@@ -57,7 +57,7 @@ export class BotButtons {
     );
   }
 
-  static showExpensesMenu(button_commands: ButtonsLocalNames[]) {
+  static showExpensesMenu(button_commands: ButtonsLocalNames[]): any {
     return Markup.inlineKeyboard(
       [
         Markup.button.callback(button_commands[0], 'add_expense'),
@@ -69,7 +69,7 @@ export class BotButtons {
     );
   }
 
-  static showBudgetOptions(button_commands: ButtonsLocalNames[]) {
+  static showBudgetOptions(button_commands: ButtonsLocalNames[]): any {
     return Markup.inlineKeyboard(
       [
         Markup.button.callback(button_commands[0], 'add_budget_sum'),
@@ -80,7 +80,8 @@ export class BotButtons {
       },
     );
   }
-  static showCurrenciesOptions(button_commands: ButtonsLocalNames[]) {
+
+  static showCurrenciesOptions(button_commands: ButtonsLocalNames[]): any {
     return Markup.inlineKeyboard(
       [
         Markup.button.callback(button_commands[0], 'all_currencies'),
@@ -93,7 +94,7 @@ export class BotButtons {
     );
   }
 
-  static showCurrenciesSumOptions(button_commands: ButtonsLocalNames[]) {
+  static showCurrenciesSumOptions(button_commands: ButtonsLocalNames[]): any {
     return Markup.inlineKeyboard([
       Markup.button.callback(button_commands[0], 'another_currency'),
       Markup.button.callback(button_commands[1], 'currencies'),
@@ -101,7 +102,7 @@ export class BotButtons {
     ]);
   }
 
-  static showExpensesPeriod(button_commands: ButtonsLocalNames[]) {
+  static showExpensesPeriod(button_commands: ButtonsLocalNames[]): any {
     return Markup.inlineKeyboard(
       [
         Markup.button.callback(button_commands[0], 'w'),

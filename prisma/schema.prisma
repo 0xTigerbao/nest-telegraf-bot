@@ -11,7 +11,12 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+  id          Int      @id @default(autoincrement())
+  first_name  String?
+  last_name   String?
+  username    String?
+  telegram_id Int      @unique
+  language    String
+  createAt    DateTime @default(now())
+  updateAt    DateTime @updatedAt
 }

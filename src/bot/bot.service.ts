@@ -10,6 +10,7 @@ import {
 import { Context, Telegraf } from 'telegraf';
 import { BotButtons } from './bot.buttons';
 import { I18nTranslateService } from '../i18n/i18n.service';
+import { PrismaService } from '../prisma';
 
 const CURRENCIES_COMMANDS = [
   'Получение или расчет суммы курсов валют',
@@ -25,6 +26,7 @@ export class BotService {
   private readonly _i18n: I18nTranslateService;
 
   constructor(
+    private readonly prisma: PrismaService,
     @InjectBot() private bot: Telegraf<Context>,
     i18n: I18nTranslateService,
   ) {
@@ -33,8 +35,15 @@ export class BotService {
 
   @Start()
   async start(@Ctx() ctx: Context) {
+    const user = await this.prisma.user.findUnique({
+      where: { telegram_id: ctx.from.id },
+    });
+
+    if (!user) {
+      //TODO: register
+    }
     await ctx.replyWithHTML(
-      await this._i18n.getWelcome(ctx.from.id),
+      await this._i18n.getWelcome(user),
       BotButtons.startupButtons(
         await this._i18n.startupButtons(ctx['session']['language']),
       ),
@@ -67,6 +76,7 @@ export class BotService {
       BotButtons.chooseLanguage(),
     );
   }
+
   @Hears([...CURRENCIES_COMMANDS])
   async getCommand(@Ctx() ctx: Context) {
     await ctx.deleteMessage();
